@@ -21,7 +21,7 @@ export default function Home() {
       <div
         className={`${
           isStarting ? 'pointer-events-none opacity-25 blur-sm' : ''
-        } flex flex-col h-full`}
+        } flex flex-col`}
       >
         <Header
           isStarting={isStarting}
