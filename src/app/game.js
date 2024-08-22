@@ -17,10 +17,19 @@ const Game = ({ resetGame, playWithMariansRule }) => {
   const [deck, setDeck] = useState(createShuffledDeck());
   const [isEasyMode, setIsEasyMode] = useState(false);
   const niceMsgs = ['NICE', 'OH YEAH', 'Sweet move, homie'];
+  let checkLost = turnsPlayedCardsCount === 2 || turnsPlayedCardsCount == 1;
 
   useEffect(() => {
     init();
   }, []);
+
+  useEffect(() => {
+    console.log('check if can win');
+
+    //now check the current hand isLost() if true setLost(true) else nothing
+
+    //setErrorMsg({ msg: 'You Lost.', color: '' });
+  }, [checkLost, turn]);
 
   function init() {
     const playersHandsArr = [];
@@ -121,6 +130,10 @@ const Game = ({ resetGame, playWithMariansRule }) => {
         color: 'red',
       });
       return;
+    }
+
+    if (turnsPlayedCardsCount < 2) {
+      // can not see the btn
     }
 
     if (canPlaceCardOnPile(currCardSelected, idx)) {
