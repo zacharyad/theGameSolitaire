@@ -79,6 +79,11 @@ const Game = ({ resetGame, playWithMariansRule }) => {
   function handleSettingCurrSelectCard(cardVal) {
     setCurrCardSelected(cardVal);
     setErrorMsg({ msg: '', color: '' });
+    if (!canWin()) {
+      console.log('you lose\n\n\n\n\n\n\n\n');
+      setErrorMsg({ msg: 'You Lose.', color: 'red' });
+      return;
+    }
   }
 
   function dealAtEndOfTurn() {
@@ -123,7 +128,11 @@ const Game = ({ resetGame, playWithMariansRule }) => {
       return;
     }
 
-    if (canPlaceCardOnPile(currCardSelected, idx)) {
+    let [canPlace, msg] = canPlaceCardOnPile(currCardSelected, idx);
+
+    if (canPlace) {
+      setErrorMsg((prev) => ({ color: 'green', msg: msg }));
+
       let newPiles = piles;
       newPiles[idx] = currCardSelected;
       setPiles(newPiles);
@@ -144,47 +153,48 @@ const Game = ({ resetGame, playWithMariansRule }) => {
   function canPlaceCardOnPile(cardVal, pileIdx) {
     // logic to test the possible outcomes for a card being placed on a given pile
     if (pileIdx < 2) {
-      console.log('start of add pile');
       if (piles[pileIdx] - cardVal === 10) {
-        console.log('diff of 10');
-        setErrorMsg((prev) => ({ ...prev, msg: getNiceMessage() }));
-        return true;
+        return [true, getNiceMessage()];
       }
 
       if (playWithMariansRule && piles[pileIdx] - cardVal === 20) {
-        console.log('diff of 20');
-        setErrorMsg((prev) => ({ ...prev, msg: 'Marian would be proud!' }));
-        return true;
+        return [true, 'Marian would be proud'];
       }
 
-      return piles[pileIdx] < cardVal ? true : false;
+      return piles[pileIdx] < cardVal ? [true, ''] : [false, ''];
     } else {
       if (cardVal - piles[pileIdx] === 10) {
-        console.log('diff of 10');
-        setErrorMsg((prev) => ({ ...prev, msg: getNiceMessage() }));
-        return true;
-      }
-      if (playWithMariansRule && cardVal - piles[pileIdx] === 20) {
-        console.log('diff of 20');
-        setErrorMsg((prev) => ({ ...prev, msg: 'Marian would be proud!' }));
-        return true;
+        return [true, getNiceMessage()];
       }
 
-      return piles[pileIdx] > cardVal ? true : false;
+      if (playWithMariansRule && cardVal - piles[pileIdx] === 20) {
+        return [true, 'Marian would be proud'];
+      }
+
+      return piles[pileIdx] > cardVal ? [true, ''] : [false, ''];
     }
   }
 
-  // function testIfWonOrLostBeforeHand() {
-  //   let p1 = 0;
-  //   let p2 = 0;
+  function canWin() {
+    for (let i = 0; i < piles.length; i++) {
+      for (let j = 0; j < playersHands[turn].length; j++) {
+        let canThisWin = canPlaceCardOnPile(playersHands[turn][j], i);
+        if (canThisWin) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 
-  //   while (p2 < currHandPlaying.length) {}
-  // }
+  if (errorMsg.msg === 'You Lose.') {
+    return <div>you lose</div>;
+  }
 
   if (cardsLeft === 0) {
     console.log('Winner');
     return (
-      <div className="flex flex-col gap-2 justify-center  m-auto items-center">
+      <div className="flex flex-col gap-2 justify-center h-full m-auto items-center">
         <h1>YOU Won!</h1>
         <button
           onClick={resetGame}
