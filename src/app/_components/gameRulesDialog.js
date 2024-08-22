@@ -21,7 +21,7 @@ function GameRulesDialog() {
       <dialog
         onClick={closeDialog}
         ref={dialogRef}
-        className="bg-white p-2 rounded shadow-lg w-5/6 md:w-1/3"
+        className="bg-white p-4 rounded shadow-lg w-11/12 md:w-2/3"
       >
         <h2 className="text-2xl font-bold mb-4">Card Game Rules</h2>
         <p className="mb-4">

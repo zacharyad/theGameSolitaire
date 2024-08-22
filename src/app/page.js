@@ -20,18 +20,24 @@ export default function Home() {
     >
       <div
         className={`${
-          isStarting ? 'pointer-events-none opacity-25' : ''
+          isStarting ? 'pointer-events-none opacity-25 blur-sm' : ''
         } flex flex-col`}
       >
         <Header
           isStarting={isStarting}
           playWithMariansRule={playWithMariansRule}
         />
-        <Game resetGame={() => setIsStarting(true)} playWithMariansRule={playWithMariansRule} />
+        <Game
+          resetGame={() => setIsStarting(true)}
+          playWithMariansRule={playWithMariansRule}
+        />
       </div>
       {isStarting && (
-        <div className="p-4 bg-slate-100 shadow-2xl shadow-slate-900 text-gray-800 fixed bottom-0 left-0 right-0">
-          <form onSubmit={handleStartGame} className="flex flex-col">
+        <div className="p-8 h-2/6  bg-slate-100 shadow-2xl shadow-slate-900 text-gray-800 fixed bottom-0 left-0 right-0">
+          <form
+            onSubmit={handleStartGame}
+            className=" h-full flex flex-col justify-around"
+          >
             <button
               onClick={() => setIsStarting(true)}
               className="bg-blue-500 w-3/4 md:w-1/6 mx-auto hover:bg-blue-600 text-white font-medium py-3 px-6 rounded-md shadow-md hover:shadow-lg transition-all duration-200"
