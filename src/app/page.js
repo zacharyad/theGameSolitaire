@@ -21,13 +21,13 @@ export default function Home() {
       <div
         className={`${
           isStarting ? 'pointer-events-none opacity-25' : ''
-        } flex flex-col h-full`}
+        } flex flex-col`}
       >
         <Header
           isStarting={isStarting}
           playWithMariansRule={playWithMariansRule}
         />
-        <Game />
+        <Game resetGame={() => setIsStarting(true)} playWithMariansRule={playWithMariansRule} />
       </div>
       {isStarting && (
         <div className="p-4 bg-slate-100 shadow-2xl shadow-slate-900 text-gray-800 fixed bottom-0 left-0 right-0">

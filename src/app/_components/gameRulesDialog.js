@@ -13,7 +13,7 @@ function GameRulesDialog() {
   };
 
   return (
-    <div className="text-gray-800 cursor-pointer text-sm md:text-lg border-2 border-blue-400 w-8 h-8 md:h-12 md:w-12 rounded-full content-center">
+    <div className="text-gray-800 cursor-pointer text-sm md:text-lg border-2 border-blue-300 w-8 h-8 md:h-12 md:w-12 rounded-full content-center">
       <button onClick={openDialog} className="w-full h-full rounded-full">
         i
       </button>

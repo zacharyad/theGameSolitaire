@@ -22,7 +22,7 @@ const PlayerCardArea = ({
         id="playersCardContainer"
         className="flex flex-wrap justify-center gap-8 w-5/6 md:w-full rounded-lg"
       >
-        {cardsArr.length > 0 ? (
+        {cardsArr.length > 0 &&
           cardsArr.map((cardVal, idx) => {
             return (
               <Card
@@ -32,12 +32,7 @@ const PlayerCardArea = ({
                 onClick={() => handleCardSelect(cardVal)}
               />
             );
-          })
-        ) : (
-          <p key={1} className="mx-auto">
-            All Done!
-          </p>
-        )}
+          })}
       </div>
     </div>
   );

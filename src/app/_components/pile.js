@@ -18,13 +18,15 @@ const Pile = ({
   return (
     <div
       className={`${colorStates[colorState]} card w-1/4 h-40
-      md:text-4xl text-lg md:h-64 sm:w-1/6 border-2 flex-col bg-blue-50  border-gray-700 rounded-md flex justify-center items-center font-bold cursor-pointer transition-all duration-50 ease-out`}
+      md:text-4xl text-lg md:h-64 sm:w-1/6 border-2 flex-col bg-blue-50  border-gray-400 rounded-md flex justify-center items-center font-bold cursor-pointer transition-all duration-50 ease-out`}
       onMouseEnter={() => setColorState(isViable(currentCard, pileIdx) ? 1 : 2)}
       onMouseLeave={() => setColorState(0)}
       onClick={onClick}
     >
-      {pileIdx < 2 ? '+' : '-'}
-      {value}
+      <p>{value}</p>
+      <p className="italic text-sm font-thin opacity-80">
+        {pileIdx < 2 ? 'or more' : 'or less'}
+      </p>
     </div>
   );
 };

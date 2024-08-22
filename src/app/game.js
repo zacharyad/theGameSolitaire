@@ -3,20 +3,20 @@ import React, { useEffect, useState } from 'react';
 import PlayerCardArea from './_components/playerCardArea';
 import Pile from './_components/pile';
 
-const Game = () => {
+const Game = ({ resetGame, playWithMariansRule }) => {
   const [numPlayersHands, _] = useState(2);
   const [piles, setPiles] = useState([1, 1, 100, 100]);
   const [turn, setTurn] = useState(0);
   const [cardsLeft, setCardsLeft] = useState(98);
-  const [errorMsg, setErrorMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState({ msg: '', color: '' });
   const [playersHands, setPlayersHands] = useState([]);
   const [currHandPlaying, setCurrHandPlaying] = useState([]);
   const [currCardSelected, setCurrCardSelected] = useState(undefined);
   const [canPlaceCard, setCanPlaceCard] = useState(false);
   const [turnsPlayedCardsCount, setTurnsPlayedCardsCount] = useState(0);
   const [deck, setDeck] = useState(createShuffledDeck());
-  const [isMariansRuleApplied, setIsMariansRuleApplied] = useState(true);
   const [isEasyMode, setIsEasyMode] = useState(false);
+  const niceMsgs = ['NICE', 'OH YEAH', 'Sweet move, homie'];
 
   useEffect(() => {
     init();
@@ -63,6 +63,7 @@ const Game = () => {
   function handleTurnEnd() {
     dealAtEndOfTurn();
     setCurrCardSelected(undefined);
+    setErrorMsg({ msg: '', color: '' });
     setTurnsPlayedCardsCount(0);
     advTurn();
   }
@@ -77,7 +78,7 @@ const Game = () => {
 
   function handleSettingCurrSelectCard(cardVal) {
     setCurrCardSelected(cardVal);
-    setErrorMsg('');
+    setErrorMsg({ msg: '', color: '' });
   }
 
   function dealAtEndOfTurn() {
@@ -115,7 +116,10 @@ const Game = () => {
 
   function handleSelectingPileAndCardPlacement(idx) {
     if (currCardSelected == undefined) {
-      setErrorMsg('Select a card from your hand before selecting a pile.');
+      setErrorMsg({
+        msg: 'Select a card from your hand before selecting a pile.',
+        color: 'red',
+      });
       return;
     }
 
@@ -126,30 +130,43 @@ const Game = () => {
       updatePlayersHand();
       setTurnsPlayedCardsCount((prev) => prev + 1);
       setCardsLeft((prev) => prev - 1);
-      setErrorMsg('');
       setCurrCardSelected(undefined);
     } else {
-      setErrorMsg('This Move is not valid.');
+      setErrorMsg({ msg: 'Not a valid move', color: 'red' });
       return;
     }
+  }
+
+  function getNiceMessage() {
+    return niceMsgs[Math.floor(Math.random() * niceMsgs.length)];
   }
 
   function canPlaceCardOnPile(cardVal, pileIdx) {
     // logic to test the possible outcomes for a card being placed on a given pile
     if (pileIdx < 2) {
-      if (
-        piles[pileIdx] - cardVal === 10 ||
-        (isMariansRuleApplied && piles[pileIdx] - cardVal === 20)
-      ) {
+      console.log('start of add pile');
+      if (piles[pileIdx] - cardVal === 10) {
+        console.log('diff of 10');
+        setErrorMsg((prev) => ({ ...prev, msg: getNiceMessage() }));
+        return true;
+      }
+
+      if (playWithMariansRule && piles[pileIdx] - cardVal === 20) {
+        console.log('diff of 20');
+        setErrorMsg((prev) => ({ ...prev, msg: 'Marian would be proud!' }));
         return true;
       }
 
       return piles[pileIdx] < cardVal ? true : false;
     } else {
-      if (
-        cardVal - piles[pileIdx] === 10 ||
-        (isMariansRuleApplied && cardVal - piles[pileIdx] === 20)
-      ) {
+      if (cardVal - piles[pileIdx] === 10) {
+        console.log('diff of 10');
+        setErrorMsg((prev) => ({ ...prev, msg: getNiceMessage() }));
+        return true;
+      }
+      if (playWithMariansRule && cardVal - piles[pileIdx] === 20) {
+        console.log('diff of 20');
+        setErrorMsg((prev) => ({ ...prev, msg: 'Marian would be proud!' }));
         return true;
       }
 
@@ -157,9 +174,31 @@ const Game = () => {
     }
   }
 
+  // function testIfWonOrLostBeforeHand() {
+  //   let p1 = 0;
+  //   let p2 = 0;
+
+  //   while (p2 < currHandPlaying.length) {}
+  // }
+
+  if (cardsLeft === 0) {
+    console.log('Winner');
+    return (
+      <div className="flex flex-col gap-2 justify-center  m-auto items-center">
+        <h1>YOU Won!</h1>
+        <button
+          onClick={resetGame}
+          className="bg-blue-500 w-full mx-auto  hover:bg-blue-600 text-white font-medium py-3 px-6 rounded-md shadow-md hover:shadow-lg transition-all duration-200"
+        >
+          Play Again?
+        </button>
+      </div>
+    );
+  }
+
   return (
     <>
-      <div className="flex flex-col gap-2 justify-between mt-16">
+      <div className="flex flex-col gap-2 justify-between mt-24">
         <div className="flex gap-2 justify-between ">
           {piles.map((pileVal, idx) => {
             return (
@@ -203,11 +242,17 @@ const Game = () => {
           End Hand
         </button>
       )}
-      <div className="h-20 pt-12 text-sm md:text-lg mx-auto ">
-        {errorMsg.length > 0 ? (
-          <p className="text-red-400">{errorMsg}</p>
+      <div className="h-20 p-4 text-md md:text-lg font-mono font-semibold mx-auto text-center">
+        {errorMsg.msg ? (
+          <p
+            className={`${
+              errorMsg.color !== 'red' ? 'text-green-600' : 'text-red-500'
+            } text-lg`}
+          >
+            {errorMsg.msg}
+          </p>
         ) : (
-          <p className="opacity-0">Error Message</p>
+          <div></div>
         )}
       </div>
     </>
