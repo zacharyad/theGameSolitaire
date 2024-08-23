@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import Card from './card';
+import Card from './card.jsx';
 
 const PlayerCardArea = ({
   cardsArr,
@@ -29,7 +29,7 @@ const PlayerCardArea = ({
                 value={cardVal}
                 isSelected={currSelectedCard === cardVal}
                 key={playersHandIdentifier + idx}
-                onClick={() => handleCardSelect(cardVal)}
+                onClick={handleCardSelect}
               />
             );
           })}

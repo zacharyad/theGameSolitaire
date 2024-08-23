@@ -1,6 +1,6 @@
 import GameRulesDialog from './gameRulesDialog';
 
-export default function Header({ isStarting, playWithMariansRule }) {
+export default function Header({ isStarting, playWithMariansRule, resetGame }) {
   return (
     <div
       className={`flex justify-between absolute top-0 left-0 right-0 text-center m-4 text-gray-900 text-5xl font-extrabol`}
@@ -12,7 +12,7 @@ export default function Header({ isStarting, playWithMariansRule }) {
         </span>
       </p>
 
-      <GameRulesDialog />
+      <GameRulesDialog resetGame={resetGame} />
     </div>
   );
 }

@@ -1,10 +1,10 @@
-'use client';
 import React, { useEffect, useState } from 'react';
 import PlayerCardArea from './_components/playerCardArea';
 import Pile from './_components/pile';
 
 const Game = ({ resetGame, playWithMariansRule }) => {
   const [numPlayersHands, _] = useState(2);
+  const [lost, setLost] = useState(false);
   const [piles, setPiles] = useState([1, 1, 100, 100]);
   const [turn, setTurn] = useState(0);
   const [cardsLeft, setCardsLeft] = useState(98);
@@ -19,6 +19,13 @@ const Game = ({ resetGame, playWithMariansRule }) => {
   const niceMsgs = ['NICE', 'OH YEAH', 'Sweet move, homie'];
   let checkLost = turnsPlayedCardsCount === 2 || turnsPlayedCardsCount == 1;
 
+  console.log(
+    'rerendering',
+    playersHands,
+    piles,
+    'button to go next present: ',
+    turnsPlayedCardsCount >= 2
+  );
   useEffect(() => {
     init();
   }, []);
@@ -26,9 +33,23 @@ const Game = ({ resetGame, playWithMariansRule }) => {
   useEffect(() => {
     console.log('check if can win');
 
-    //now check the current hand isLost() if true setLost(true) else nothing
+    if (playersHands.length === 0 || turnsPlayedCardsCount >= 2) return;
 
-    //setErrorMsg({ msg: 'You Lost.', color: '' });
+    //now check the current hand isLost() if true setLost(true) else
+    for (let i = 0; i < piles.length; i++) {
+      for (let j = 0; j < playersHands[turn].length; j++) {
+        const cardInHand = playersHands[turn][j];
+        console.log('in j loop: ', cardInHand);
+        if (canPlaceCardOnPile(cardInHand, i)) {
+          console.log('can keep playing');
+          return;
+        }
+      }
+    }
+
+    setLost(true);
+
+    setErrorMsg({ msg: 'You Lost.', color: 'red' });
   }, [checkLost, turn]);
 
   function init() {
@@ -187,20 +208,42 @@ const Game = ({ resetGame, playWithMariansRule }) => {
     }
   }
 
-  // function testIfWonOrLostBeforeHand() {
-  //   let p1 = 0;
-  //   let p2 = 0;
+  function handleGameReset() {
+    setPiles([1, 1, 100, 100]);
+    setTurn(0);
+    setCardsLeft(98);
+    setErrorMsg({ msg: '', color: '' });
+    setPlayersHands([]);
+    setCurrHandPlaying([]);
+    setCurrCardSelected(undefined);
+    setTurnsPlayedCardsCount(0);
+    setDeck(createShuffledDeck());
+    setLost(false);
+    init();
+    resetGame();
+  }
 
-  //   while (p2 < currHandPlaying.length) {}
-  // }
+  if (lost) {
+    return (
+      <div className="flex flex-col h-screen gap-2 justify-center  m-auto items-center">
+        <h1>You Lost.</h1>
+        <button
+          onClick={handleGameReset}
+          className="bg-orange-500 w-full mx-auto  hover:bg-orange-600 text-white font-medium py-3 px-6 rounded-md shadow-md hover:shadow-lg transition-all duration-200"
+        >
+          Play Again?
+        </button>
+      </div>
+    );
+  }
 
   if (cardsLeft === 0) {
     console.log('Winner');
     return (
-      <div className="flex flex-col gap-2 justify-center  m-auto items-center">
+      <div className="flex flex-col gap-2 h-screen justify-center  m-auto items-center">
         <h1>YOU Won!</h1>
         <button
-          onClick={resetGame}
+          onClick={handleGameReset}
           className="bg-blue-500 w-full mx-auto  hover:bg-blue-600 text-white font-medium py-3 px-6 rounded-md shadow-md hover:shadow-lg transition-all duration-200"
         >
           Play Again?

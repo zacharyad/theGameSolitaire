@@ -26,10 +26,6 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-.cardselected {
-  background-color: 'pink';
-}
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;

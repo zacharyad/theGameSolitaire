@@ -16,7 +16,7 @@ export default function Home() {
 
   return (
     <main
-      className={`font-body flex flex-col p-4 w-full h-screen bg-blue-100 text-gray-800`}
+      className={`font-body flex flex-col p-4 w-full h-screen bg-gray-50 text-gray-800`}
     >
       <div
         className={`${
@@ -26,6 +26,7 @@ export default function Home() {
         <Header
           isStarting={isStarting}
           playWithMariansRule={playWithMariansRule}
+          resetGame={() => setIsStarting(true)}
         />
         <Game
           resetGame={() => setIsStarting(true)}
@@ -34,6 +35,9 @@ export default function Home() {
       </div>
       {isStarting && (
         <div className="p-8 h-2/6  bg-slate-100 shadow-2xl shadow-slate-900 text-gray-800 fixed bottom-0 left-0 right-0">
+          <h1 className="fixed top-1/3 mx-auto left-1/2 -translate-x-1/2 text-8xl text-grey-700 backdrop-blur-md">
+            The Game
+          </h1>
           <form
             onSubmit={handleStartGame}
             className=" h-full flex flex-col justify-around"
