@@ -50,7 +50,7 @@ export default function Home() {
             </button>
             <div className="mx-auto flex gap-2 mt-8 items-end">
               <label htmlFor="mariandRuleCheckbox">
-                Play w/ Marian's rule?
+                Play w/ Marian&apos;s rule?
               </label>
               <input
                 name="mariandRuleCheckbox"

@@ -12,10 +12,10 @@ const PlayerCardArea = ({
   return (
     <div id="playerCardArea" className="flex flex-col items-center gap-6 my-8">
       <p className="text-xl font-bold">
-        <span id="cardsLeftMsg"></span> Card's Left: {deckCount}
+        <span id="cardsLeftMsg"></span> Cards Left: {deckCount}
       </p>
       <p className="text-xl font-bold">
-        Player's Hand: <span>{playersHandIdentifier}</span>
+        Player&apos;s Hand: <span>{playersHandIdentifier}</span>
       </p>
 
       <div

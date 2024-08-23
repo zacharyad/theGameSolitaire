@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect, useState } from 'react';
 import PlayerCardArea from './_components/playerCardArea';
 import Pile from './_components/pile';
@@ -15,35 +16,20 @@ const Game = ({ resetGame, playWithMariansRule }) => {
   const [canPlaceCard, setCanPlaceCard] = useState(false);
   const [turnsPlayedCardsCount, setTurnsPlayedCardsCount] = useState(0);
   const [deck, setDeck] = useState(createShuffledDeck());
-  const [isEasyMode, setIsEasyMode] = useState(false);
   const niceMsgs = ['NICE', 'OH YEAH', 'Sweet move, homie'];
   let checkLost = turnsPlayedCardsCount === 2 || turnsPlayedCardsCount == 1;
 
-  console.log(
-    'rerendering',
-    playersHands,
-    piles,
-    'button to go next present: ',
-    turnsPlayedCardsCount >= 2
-  );
   useEffect(() => {
     init();
   }, []);
 
   useEffect(() => {
-    console.log('check if can win');
-
     if (playersHands.length === 0 || turnsPlayedCardsCount >= 2) return;
 
     //now check the current hand isLost() if true setLost(true) else
     for (let i = 0; i < piles.length; i++) {
       for (let j = 0; j < playersHands[turn].length; j++) {
-        const cardInHand = playersHands[turn][j];
-        console.log('in j loop: ', cardInHand);
-        if (canPlaceCardOnPile(cardInHand, i)) {
-          console.log('can keep playing');
-          return;
-        }
+        if (canPlaceCardOnPile(cardInHand, i)) return;
       }
     }
 
@@ -178,15 +164,12 @@ const Game = ({ resetGame, playWithMariansRule }) => {
   function canPlaceCardOnPile(cardVal, pileIdx) {
     // logic to test the possible outcomes for a card being placed on a given pile
     if (pileIdx < 2) {
-      console.log('start of add pile');
       if (piles[pileIdx] - cardVal === 10) {
-        console.log('diff of 10');
         setErrorMsg((prev) => ({ ...prev, msg: getNiceMessage() }));
         return true;
       }
 
       if (playWithMariansRule && piles[pileIdx] - cardVal === 20) {
-        console.log('diff of 20');
         setErrorMsg((prev) => ({ ...prev, msg: 'Marian would be proud!' }));
         return true;
       }
@@ -194,12 +177,10 @@ const Game = ({ resetGame, playWithMariansRule }) => {
       return piles[pileIdx] < cardVal ? true : false;
     } else {
       if (cardVal - piles[pileIdx] === 10) {
-        console.log('diff of 10');
         setErrorMsg((prev) => ({ ...prev, msg: getNiceMessage() }));
         return true;
       }
       if (playWithMariansRule && cardVal - piles[pileIdx] === 20) {
-        console.log('diff of 20');
         setErrorMsg((prev) => ({ ...prev, msg: 'Marian would be proud!' }));
         return true;
       }
@@ -238,7 +219,6 @@ const Game = ({ resetGame, playWithMariansRule }) => {
   }
 
   if (cardsLeft === 0) {
-    console.log('Winner');
     return (
       <div className="flex flex-col gap-2 h-screen justify-center  m-auto items-center">
         <h1>YOU Won!</h1>

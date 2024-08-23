@@ -45,16 +45,17 @@ function GameRulesDialog({ resetGame }) {
               uniquely labeled 2-99.
             </li>
             <li>
-              Select the card from your "hand" and then the pile to place the
-              card on.
+              Select the card from your &quot;hand&quot; and then the pile to
+              place the card on.
             </li>
             <li>Of the four piles</li>
             <li>
-              "+" require a card with higher value
+              &quot;more&quot; require a card with higher value
               <span className="relative -top-1">*</span>
             </li>
             <li>
-              "-" require a card with lower value than piles displayed value
+              &quot;less&quot; require a card with lower value than piles
+              displayed value
               <span className="relative -top-1">*</span>
             </li>
             <li>
@@ -84,31 +85,23 @@ function GameRulesDialog({ resetGame }) {
           <div className="mt-6">
             <label className="inline-flex items-center">
               <span className="ml-2 text-gray-700 mx-4">
-                Play w/ Marian's rule?
+                Play w/ Marian&apos;s rule?
               </span>
               <input
                 type="checkbox"
                 ref={mariansRuleRef}
-                className="form-checkbox h-5 w-5 text-blue-600
-         "
+                className="form-checkbox h-5 w-5 text-blue-600"
                 disabled
               />
             </label>
             <p className="text-sm text-gray-600 mt-2">
-              <strong>Marian's Rule:</strong> Instead of "rolling back 10 from a
-              given position, you can now also roll back 20. e.g. a subtraction
-              pile displaying 70 can now be rolled back to 80, or 90 if those
-              cards are played".
+              <strong>Marian&apos;s Rule:</strong> Instead of &quot;rolling
+              back&quot; 10 from a given position, you can now also roll back
+              20. e.g. a subtraction pile displaying 70 can now be rolled back
+              to 80, or 90 if those cards are played.
             </p>
           </div>
         </div>
-
-        {/* <button
-          className="mt-6 px-4 py-2 bg-blue-500 text-white font-semibold rounded shadow hover:bg-green-700 focus:outline-none"
-          onClick={closeDialog}
-        >
-          Close
-        </button> */}
       </dialog>
     </div>
   );
