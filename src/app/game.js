@@ -29,7 +29,11 @@ const Game = ({ resetGame, playWithMariansRule }) => {
     //now check the current hand isLost() if true setLost(true) else
     for (let i = 0; i < piles.length; i++) {
       for (let j = 0; j < playersHands[turn].length; j++) {
-        if (canPlaceCardOnPile(cardInHand, i)) return;
+        const cardInHand = playersHands[turn][j];
+
+        if (canPlaceCardOnPile(cardInHand, i)) {
+          return;
+        }
       }
     }
 
